@@ -1,6 +1,8 @@
 package DAO;
 import Util.ConnectionUtil;
 import Model.Account;
+import Model.Message;
+
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,7 +12,6 @@ public class AccountDAO {
     
     public Account createNewUser(String username, String password ) {
         Connection connection = ConnectionUtil.getConnection();
-        Account newUser = new Account();
         
         try {
             String sql = "INSERT INTO account (username, password) VALUES (?, ?);";
@@ -30,8 +31,40 @@ public class AccountDAO {
         catch (SQLException e ) {
             System.out.println(e.getMessage());
         }
-        return newUser;
+        return null;
     }
+
+    //Login verification: retuns account_id if successful, returns null if unsuccessful
+    public Integer userLogin(String username, String password) {
+
+        Connection connection = ConnectionUtil.getConnection();
+        
+        Integer account_id = null;
+        String db_password = null;
+
+        try {
+            String sql = "SELECT password, account_id FROM Account WHERE username=? ;";
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setString(1, username);
+
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                db_password = rs.getString("password");
+                account_id = rs.getInt("account_id");
+            }
+
+        }
+        catch (SQLException e ) {
+            System.out.println(e.getMessage());
+        }
+        if (db_password == password )
+            return account_id;
+        return null;
+    }
+
 
 
 }
