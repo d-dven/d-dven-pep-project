@@ -117,7 +117,7 @@ public class MessageDAO {
         
     }
 
-    public List<Message> getAllMessagesByUser(int account_id) {
+    public List<Message> getMessagesByAccountID(int account_id) {
         Connection connection = ConnectionUtil.getConnection();
         List<Message> ret = new ArrayList<>();
         

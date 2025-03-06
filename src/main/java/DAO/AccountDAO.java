@@ -1,16 +1,14 @@
 package DAO;
 import Util.ConnectionUtil;
 import Model.Account;
-import Model.Message;
 
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class AccountDAO {
     
-    public Account createNewUser(String username, String password ) {
+    public Account insertNewAccount(String username, String password ) {
         Connection connection = ConnectionUtil.getConnection();
         
         try {
@@ -35,7 +33,7 @@ public class AccountDAO {
     }
 
     //Login verification: retuns account_id if successful, returns null if unsuccessful
-    public Integer userLogin(String username, String password) {
+    public Integer verifyLoginInformation(String username, String password) {
 
         Connection connection = ConnectionUtil.getConnection();
         
