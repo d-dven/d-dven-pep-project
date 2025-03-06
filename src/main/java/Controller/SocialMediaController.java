@@ -1,5 +1,6 @@
 package Controller;
 
+import Service.MessageService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -18,7 +19,16 @@ public class SocialMediaController {
         Javalin app = Javalin.create();
         app.get("example-endpoint", this::exampleHandler);
 
+
+        app.get("/messages", this::getAllMessagesHandler);
+
+        app.get("/messages/{message_id}", this::getMessageByIDHandler);
+
+        app.get("/accounts/{account_id}/messages", this::getMessagesByAccountIDHandler);
+        
         return app;
+
+        
     }
 
     /**
@@ -29,5 +39,22 @@ public class SocialMediaController {
         context.json("sample text");
     }
 
+    private void getAllMessagesHandler(Context context) {
+        MessageService ms = new MessageService();
+        context.json(ms.getAllMessages());
+    }
 
+    private void getMessageByIDHandler(Context context) {
+        MessageService ms = new MessageService();
+        String message_id = context.pathParam("message_id");
+        context.json(ms.getMessageByID(Integer.valueOf(message_id)));
+    }
+
+    private void getMessagesByAccountIDHandler(Context context) {
+        MessageService ms = new MessageService();
+        String account_id = context.pathParam("account_id");
+        context.json(ms.getMessagesByAccountID(Integer.valueOf(account_id)));
+    }
+
+    
 }

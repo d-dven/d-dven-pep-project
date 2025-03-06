@@ -22,13 +22,17 @@ public class MessageService {
         return null;
     }
 
+
+    //=============================================== DONE ==================================================================
     public List<Message> getAllMessages() {
         return messageDAO.getAllMessages();
     }
+    //=================================================================================================================
 
     public Message getMessageByID(int message_id) {
-        return null;
+        return messageDAO.getMessageByID(message_id);
     }
+    //=================================================================================================================
 
     public Message deleteMessageByID(int message_id) {
         return null;
