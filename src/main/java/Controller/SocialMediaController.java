@@ -39,16 +39,24 @@ public class SocialMediaController {
         context.json("sample text");
     }
 
+
+
+//========================================= WORKS =================================================
+
     private void getAllMessagesHandler(Context context) {
         MessageService ms = new MessageService();
         context.json(ms.getAllMessages());
     }
 
+//========================================= WORKS =================================================
     private void getMessageByIDHandler(Context context) {
         MessageService ms = new MessageService();
         String message_id = context.pathParam("message_id");
         context.json(ms.getMessageByID(Integer.valueOf(message_id)));
     }
+
+
+//========================================= ERROR (possibly DAO)=================================================
 
     private void getMessagesByAccountIDHandler(Context context) {
         MessageService ms = new MessageService();
