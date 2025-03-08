@@ -63,14 +63,12 @@ public class SocialMediaController {
 
 
 
-//========================================= WORKS =================================================
 
     private void getAllMessagesHandler(Context context) {
         MessageService ms = new MessageService();
         context.json(ms.getAllMessages());
     }
 
-//========================================= WORKS =================================================
     private void getMessageByIDHandler(Context context) {
         MessageService ms = new MessageService();
         String message_id = context.pathParam("message_id");
@@ -84,7 +82,6 @@ public class SocialMediaController {
     }
 
 
-//========================================= WORKS I THINK=================================================
 
     private void getMessagesByAccountIDHandler(Context context) {
         MessageService ms = new MessageService();
@@ -92,7 +89,6 @@ public class SocialMediaController {
         context.json(ms.getMessagesByAccountID(Integer.valueOf(account_id)));
     }
 
-//========================================= WORKS =================================================
     private void insertNewAccountHandler(Context ctx) {
 
         AccountService as = new AccountService();
@@ -108,7 +104,6 @@ public class SocialMediaController {
         }
     }
 
-//========================================= WORKS =================================================
     private void loginToAccountHandler(Context ctx) {
         AccountService as = new AccountService();
         Map<String, Object> body = ctx.bodyAsClass(Map.class); // Convert JSON to Map
@@ -124,7 +119,6 @@ public class SocialMediaController {
         }
     }
 
-//========================================= WORKS =================================================
     private void deleteMessageByIDHandler(Context ctx){
         MessageService as = new MessageService();  
         int msg_id = Integer.valueOf(ctx.pathParam("message_id"));
@@ -136,7 +130,6 @@ public class SocialMediaController {
         }
     }
 
-//========================================= WORKS =================================================
     private void createNewMessageHandler(Context ctx) {
         MessageService as = new MessageService();  
         Map<String, Object> body = ctx.bodyAsClass(Map.class); // Convert JSON to Map
@@ -153,7 +146,6 @@ public class SocialMediaController {
         }
     }
 
-//========================================= WORKS =================================================
     private void updateMessageByIDHandler(Context ctx) {
         MessageService ms = new MessageService();
         Map<String, Object> body = ctx.bodyAsClass(Map.class); // Convert JSON to Map
@@ -170,10 +162,8 @@ public class SocialMediaController {
     }
 
 
-//=========================================  =================================================
 
 
-//========================================= FOR TESTING =================================================
     private void getAllAccountsHandler(Context ctx) {
         AccountService as = new AccountService();
         ctx.json(as.getAllAccounts());

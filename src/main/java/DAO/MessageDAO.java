@@ -110,7 +110,6 @@ public class MessageDAO {
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             if(rs.next()) {
-                System.out.println("FOUND MESSAGE TO UPDATE");              //PRINT STATEMENT
                 Message message = new Message(rs.getInt("message_id"), msg_to_update.getPosted_by(), message_text,
                         msg_to_update.getTime_posted_epoch());
                 return message;

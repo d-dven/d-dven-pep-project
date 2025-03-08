@@ -41,7 +41,6 @@ public class AccountService {
         }
 
         if (account_id == null) {
-            System.out.println("verifyLoginInformation returned null");                      //PRINT STATEMENT
             return null;
         }
 

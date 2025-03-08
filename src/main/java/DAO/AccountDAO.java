@@ -10,7 +10,6 @@ import java.util.List;
 
 public class AccountDAO {
     
-// =====================for internal use====================
     public boolean checkIfUsernameExists(String username) {
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -30,7 +29,6 @@ public class AccountDAO {
         return true;
     }
 
-// =====================for internal use====================
 
     public boolean checkIfAccountIDExists(int account_id) {
         Connection connection = ConnectionUtil.getConnection();
@@ -50,7 +48,6 @@ public class AccountDAO {
 
         return true;
     }
-// ============================================================
 
     public Account insertNewAccount(String username, String password ) {
         Connection connection = ConnectionUtil.getConnection();
@@ -77,9 +74,7 @@ public class AccountDAO {
     }
 
 
-// ============================================================
 
-    //Login verification: retuns account_id if successful, returns null if unsuccessful
     public Integer verifyLoginInformation(String username, String password) {
 
         Connection connection = ConnectionUtil.getConnection();

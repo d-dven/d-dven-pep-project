@@ -17,7 +17,6 @@ public class MessageService {
         this.messageDAO = messageDAO;
     }
     
-    //==============================================TRIED ==================================================================
 
     public Message createNewMessage(String message_text, int posted_by , long time_posted_epoch) {
 
@@ -30,16 +29,13 @@ public class MessageService {
     }
 
 
-    //=============================================== DONE ==================================================================
     public List<Message> getAllMessages() {
         return messageDAO.getAllMessages();
     }
-    //=============================================== DONE =================================================================
 
     public Message getMessageByID(int message_id) {
         return messageDAO.getMessageByID(message_id);
     }
-    //================================================= TRIED ================================================================
 
     public Message deleteMessageByID(int message_id) {
         Message deleted_msg = messageDAO.getMessageByID(message_id);
@@ -50,7 +46,6 @@ public class MessageService {
     }
 
 
-//====================================================== TRIED ===========================================================
 
     public Message updateMessageByID(int message_id, String message_text) {
         if (message_text == "" || message_text.length() > 255) {
@@ -59,7 +54,6 @@ public class MessageService {
         return messageDAO.updateMessageByID(message_id, message_text);
     }
 
-//==================================================== TRIED =============================================================
 
     public List<Message> getMessagesByAccountID(int account_id) {
         
