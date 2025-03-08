@@ -106,7 +106,7 @@ public class AccountDAO {
             System.out.println(e.getMessage());
         }
 
-        if (db_password.equals(password) ){
+        if (db_password != null && db_password.equals(password) ){
             return account_id;
         }
         return null;

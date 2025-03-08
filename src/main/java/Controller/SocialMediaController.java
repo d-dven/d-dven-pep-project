@@ -74,7 +74,13 @@ public class SocialMediaController {
     private void getMessageByIDHandler(Context context) {
         MessageService ms = new MessageService();
         String message_id = context.pathParam("message_id");
-        context.json(ms.getMessageByID(Integer.valueOf(message_id)));
+        Message retrieved_msg = ms.getMessageByID(Integer.valueOf(message_id));
+        
+        context.status(200);
+        if (retrieved_msg != null) {
+            context.json(retrieved_msg);
+        }
+
     }
 
 
@@ -126,7 +132,7 @@ public class SocialMediaController {
         ctx.status(200);
 
         if (deleted_msg != null) {
-            ctx.json(as.deleteMessageByID(msg_id));
+            ctx.json(deleted_msg);
         }
     }
 

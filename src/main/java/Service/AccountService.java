@@ -39,7 +39,6 @@ public class AccountService {
         if(!accountDAO.checkIfUsernameExists(username)) {
             return null;
         }
-        System.out.println("Username exists");                      //PRINT STATEMENT
 
         if (account_id == null) {
             System.out.println("verifyLoginInformation returned null");                      //PRINT STATEMENT
