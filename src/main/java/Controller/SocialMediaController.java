@@ -1,8 +1,18 @@
 package Controller;
 
 import Service.MessageService;
+
+import java.util.Map;
+
+import Model.Account;
+import Model.Message;
+
+import Service.AccountService;
+
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import java.util.Map;
+ 
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
@@ -25,6 +35,18 @@ public class SocialMediaController {
         app.get("/messages/{message_id}", this::getMessageByIDHandler);
 
         app.get("/accounts/{account_id}/messages", this::getMessagesByAccountIDHandler);
+        
+        app.post("/register",this::insertNewAccountHandler);
+
+        app.post("/login",this::loginToAccountHandler);
+
+        app.delete("/messages/{message_id}", this::deleteMessageByIDHandler);
+
+        app.post("/messages", this::createNewMessageHandler );
+
+        app.patch("/messages/{message_id}", this::updateMessageByIDHandler);
+
+        app.get("/accounts", this::getAllAccountsHandler);
         
         return app;
 
@@ -56,7 +78,7 @@ public class SocialMediaController {
     }
 
 
-//========================================= ERROR (possibly DAO)=================================================
+//========================================= WORKS I THINK=================================================
 
     private void getMessagesByAccountIDHandler(Context context) {
         MessageService ms = new MessageService();
@@ -64,5 +86,93 @@ public class SocialMediaController {
         context.json(ms.getMessagesByAccountID(Integer.valueOf(account_id)));
     }
 
-    
+//========================================= WORKS =================================================
+    private void insertNewAccountHandler(Context ctx) {
+
+        AccountService as = new AccountService();
+        Map<String, Object> body = ctx.bodyAsClass(Map.class); // Convert JSON to Map
+        String username = (String) body.get("username");
+        String password = (String) body.get("password");
+        Account newAcc = as.createNewAccount(username, password);
+        if (newAcc == null) {
+            ctx.status(400);
+        }
+        else {
+            ctx.status(200).json(newAcc);
+        }
+    }
+
+//========================================= WORKS =================================================
+    private void loginToAccountHandler(Context ctx) {
+        AccountService as = new AccountService();
+        Map<String, Object> body = ctx.bodyAsClass(Map.class); // Convert JSON to Map
+        String username = (String) body.get("username");
+        String password = (String) body.get("password");
+
+        Account currentAccount = as.loginToAccount(username, password);
+        if (currentAccount == null) {
+            ctx.status(401);
+        }
+        else {
+            ctx.status(200).json(currentAccount);
+        }
+    }
+
+//========================================= WORKS =================================================
+    private void deleteMessageByIDHandler(Context ctx){
+        MessageService as = new MessageService();  
+        int msg_id = Integer.valueOf(ctx.pathParam("message_id"));
+        Message deleted_msg = as.deleteMessageByID(msg_id);
+        ctx.status(200);
+
+        if (deleted_msg != null) {
+            ctx.json(as.deleteMessageByID(msg_id));
+        }
+    }
+
+//========================================= WORKS =================================================
+    private void createNewMessageHandler(Context ctx) {
+        MessageService as = new MessageService();  
+        Map<String, Object> body = ctx.bodyAsClass(Map.class); // Convert JSON to Map
+        String username = (String) body.get("message_text");
+        int password = (int) body.get("posted_by");
+        long time_posted_epoch = (int) body.get("time_posted_epoch");
+        Message new_msg = as.createNewMessage(username, password, time_posted_epoch);
+        
+        if (new_msg == null) {
+            ctx.status(400);
+        }
+        else { 
+            ctx.status(200).json(new_msg);
+        }
+    }
+
+//========================================= WORKS =================================================
+    private void updateMessageByIDHandler(Context ctx) {
+        MessageService ms = new MessageService();
+        Map<String, Object> body = ctx.bodyAsClass(Map.class); // Convert JSON to Map
+        String message_text = (String)body.get("message_text");
+        int posted_by = Integer.valueOf(ctx.pathParam("message_id"));
+
+        Message updatedMsg = ms.updateMessageByID( posted_by, message_text);
+        if (updatedMsg == null) {
+            ctx.status(400);
+        }
+        else { 
+            ctx.status(200).json(updatedMsg);
+        }
+    }
+
+
+//=========================================  =================================================
+
+
+//========================================= FOR TESTING =================================================
+    private void getAllAccountsHandler(Context ctx) {
+        AccountService as = new AccountService();
+        ctx.json(as.getAllAccounts());
+    }
+
+
+
 }

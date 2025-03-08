@@ -4,33 +4,34 @@ import Model.Message;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import DAO.AccountDAO;
 
 import java.sql.*;
 
 public class MessageDAO {
-    
-    public Message createNewMessage(String message_text, String username) {
+
+
+    public Message createNewMessage(String message_text, int posted_by, long time_posted_epoch) {
 
         Connection connection = ConnectionUtil.getConnection();
-        
+        AccountDAO accountDAO = new AccountDAO();
         try {
-            String sql = "SELECT * FROM Account WHERE username = ? ;";
-            PreparedStatement ps = connection.prepareStatement(sql);
+            if (accountDAO.checkIfAccountIDExists(posted_by)) {
 
-            ps.setString(1, username);
+                String sql = "INSERT INTO Message (posted_by, message_text, time_posted_epoch) VALUES (?, ?, ?);";
+                PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, posted_by);
+                ps.setString(2, message_text);
+                ps.setLong(3, time_posted_epoch);
+                
 
-            ResultSet rs = ps.executeQuery();
-            
-            if(rs.next()){
-
-                sql = "INSERT INTO Message (posted_by, message_text) VALUES (?, ?);";
-                ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.executeUpdate();
-                rs = ps.getGeneratedKeys();
-                if(rs.next()){
-                    Message message = new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"),
-                        rs.getLong("time_posted_epoch"));
+                ResultSet rs = ps.getGeneratedKeys();
+                if(rs.next()){ 
+
+                    Message message = new Message(rs.getInt("message_id"), posted_by, message_text,
+                        time_posted_epoch);
+                    
                 return message;                        
                 }   
             }
@@ -88,7 +89,7 @@ public class MessageDAO {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, message_id);
             ps.executeUpdate();
-            
+
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
@@ -99,15 +100,19 @@ public class MessageDAO {
 
     public Message updateMessageByID(int message_id, String message_text) {
         Connection connection = ConnectionUtil.getConnection();
+        Message msg_to_update = getMessageByID(message_id);
         try {
             String sql = "UPDATE Message SET message_text=? WHERE message_id=?;" ;
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, message_id);
+            ps.setString(1, message_text);
+            ps.setInt(2, message_id);
+
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             if(rs.next()) {
-                Message message = new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"),
-                        rs.getLong("time_posted_epoch"));
+                System.out.println("FOUND MESSAGE TO UPDATE");              //PRINT STATEMENT
+                Message message = new Message(rs.getInt("message_id"), msg_to_update.getPosted_by(), message_text,
+                        msg_to_update.getTime_posted_epoch());
                 return message;
             }
         }catch(SQLException e){
